@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
@@ -32,15 +33,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	// private CustomUserDetailService customUserDetailService;
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http.csrf().disable();
-		http.authorizeRequests().antMatchers("/nonsecure/**").permitAll().and().authorizeRequests()
-				.antMatchers("/console/**").permitAll().and().authorizeRequests().antMatchers("/secure/**")
-				.hasAnyRole("ADMIN,USER").and().httpBasic();
+	public void configure(final WebSecurity web) throws Exception {
+		web.ignoring().antMatchers("/nonsecure/**");
 	}
 
 	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+	protected void configure(final HttpSecurity http) throws Exception {
+		http.csrf().disable();
+		http.authorizeRequests().antMatchers("/secure/**").hasAnyRole("ADMIN,USER").and().httpBasic();
+	}
+
+	@Override
+	protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
 
 		/**
 		 * Once The Data base Setup is Ready, then uncomment the below line, and comment

@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  *
  */
 @Configuration
-//@EnableAutoConfiguration
+@EnableAutoConfiguration
 @ComponentScan({ "in.rest.spring.security.controller"
 		/**
 		 * Once The Data base Setup is Ready, then uncomment the below line
