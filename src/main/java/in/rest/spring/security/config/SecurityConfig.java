@@ -18,18 +18,42 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  */
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
+/**
+ * Once The Data base Setup is Ready, then uncomment the below line
+ */
+// @EnableJpaRepositories(basePackageClasses = UserRepository.class)
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	/**
+	 * Once The Data base Setup is Ready, then uncomment the below line
+	 */
+	// @Autowired
+	// private CustomUserDetailService customUserDetailService;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable();
 		http.authorizeRequests().antMatchers("/nonsecure/**").permitAll().and().authorizeRequests()
-				.antMatchers("/secure/**").hasAnyRole("ADMIN,USER").and().httpBasic();
+				.antMatchers("/console/**").permitAll().and().authorizeRequests().antMatchers("/secure/**")
+				.hasAnyRole("ADMIN,USER").and().httpBasic();
 	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+
+		/**
+		 * Once The Data base Setup is Ready, then uncomment the below line, and comment
+		 * out the inmemory authentication
+		 */
+		// auth.userDetailsService(customUserDetailService);
+
+		// auth.jdbcAuthentication().dataSource(appDataSource())
+		// .usersByUsernameQuery("select username, password, enabled"
+		// + " from users where username=?")
+		// .authoritiesByUsernameQuery("select username, authority "
+		// + "from authorities where username=?");
+		// .passwordEncoder(new BCryptPasswordEncoder());
 		auth.inMemoryAuthentication().withUser("Prasad").password("Welcome123").roles("ADMIN").and().withUser("App")
 				.password("Hello123").roles("USER");
 	}

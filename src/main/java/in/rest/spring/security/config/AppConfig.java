@@ -12,8 +12,14 @@ import org.springframework.context.annotation.Configuration;
  *
  */
 @Configuration
-@EnableAutoConfiguration
-@ComponentScan({ "in.rest.security.controller" })
+//@EnableAutoConfiguration
+@ComponentScan({ "in.rest.spring.security.controller"
+		/**
+		 * Once The Data base Setup is Ready, then uncomment the below line
+		 */
+		// "in.rest.spring.security.repository",
+		// "in.rest.spring.security.service"
+})
 public class AppConfig {
 
 }
